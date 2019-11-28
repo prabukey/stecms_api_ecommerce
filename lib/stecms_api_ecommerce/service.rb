@@ -7,8 +7,12 @@ include StecmsApiEcommerce::Service
 module StecmsApiEcommerce
 
   module Service
+    def self.load
+      categories
+      products
+    end
+
     def self.products
-      puts "run"
       responese = ::Ecommerce.call  "products"
       product = ::ExtProduct.new(responese["products"])
       product.save
