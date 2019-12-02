@@ -1,0 +1,18 @@
+.container-fluid.mt-5
+  .row
+    .col-12
+      .table-responsive
+        %table.table.table-sm#user-roles-table
+          %thead
+            %tr
+              - t("stecms_api_ecommerce.table").each do |_, val|
+                %th=  val
+          %tbody
+            - @categories.each do |store|
+              %tr
+                %td= store.category.title
+                %td= store.category.subtitle
+                %td= truncate store.category.body, limit: 50
+                %td= store.category.active
+                %td
+

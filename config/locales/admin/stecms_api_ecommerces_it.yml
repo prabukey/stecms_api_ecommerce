@@ -1,0 +1,8 @@
+it:
+  stecms_api_ecommerce:
+    table:
+      title: Titolo
+      subtitle: Sottotitolo
+      body: Corpo
+      ecommerce_permalink: Link e-commerce
+      active: Attivo

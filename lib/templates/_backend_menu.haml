@@ -1,0 +1,72 @@
+%nav.navbar.navbar-dark.bg-dark.navbar-expand-lg
+  =link_to main_app.backend_root_path, class: "navbar-brand" do
+    %span.text-primary<>
+      STE.
+    %span.text-white<>
+      CMS
+
+  %button.navbar-toggler{type: "button", :"data-toggle" => "collapse", :"data-target" => "#backend-navbar"}
+    %span.navbar-toggler-icon
+
+  #backend-navbar.collapse.navbar-collapse
+    %ul.navbar-nav.mr-auto
+      -if @user.can(:see_pages) && LipsiaWEB[:modules][:pages]
+        %li.nav-item.mx-lg-2
+          =link_to main_app.backend_pages_path, class: "nav-link" do
+            %i.fa.fa-file-text.mr-2.fa-lg
+            =t("admin.side_menu.pages_tree")
+      %li.nav-item.mx-lg-2.dropdown
+        %a.nav-link.dropdown-toggle{href: "#", id: "navbarDropdown", role: "button", "data-toggle"=>"dropdown", "aria-haspopup"=> true, "aria-expanded"=>"false"}
+          %i.fa.fa-plug.mr-2.fa-lg
+          = "Master"
+        %div.dropdown-menu{"aria-labelledby"=>"navbarDropdown"}
+          = link_to 'Products', main_app.stecms_api_ecommerce_products_path, class: 'dropdown-item'
+          =link_to 'Catgories', main_app.stecms_api_ecommerce_categories_path, class: "dropdown-item"
+
+      -if policy(Contact).index? || policy(Contact::Typology).index?
+        %li.nav-item.mx-lg-2
+          =link_to main_app.backend_contacts_path, class: "nav-link" do
+            %i.fa.fa-paper-plane.mr-2.fa-lg
+            =t("admin.side_menu.contacts")
+
+      -if @user.can(:see_trash)
+        %li.nav-item.mx-lg-2
+          =link_to main_app.backend_trashbin_index_path, class: "nav-link" do
+            %i.fa.fa-trash-o.mr-2.fa-lg
+            =t("admin.side_menu.trash")
+
+      -# seo utilities
+      -if policy(:seo_utilities).index?
+        %li.nav-item.mx-lg-2
+          =link_to main_app.backend_seo_utilities_index_path, class: "nav-link" do
+            %i.fa.fa-bar-chart-o.mr-2.fa-lg
+            =t("admin.side_menu.seo_utilities")
+
+      -if @user.can(:see_push_notifications) && LipsiaWEB[:modules][:push_notifications]
+        %li.nav-item.mx-lg-2
+          =link_to main_app.backend_rpush_web_push_notifications_path, class: "nav-link" do
+            %i.fa.fa-bell.mr-2.fa-lg
+            =t("admin.side_menu.push_notifications")
+
+
+      -if policy(:user).index?
+        %li.nav-item.mx-lg-2
+          =link_to main_app.backend_users_path, class: "nav-link" do
+            %i.fa.fa-users.mr-2.fa-lg
+            =t("admin.users.title")
+
+
+    -# right menu
+    %ul.navbar-nav.ml-auto
+      -# settings
+      -if @user.can(:manage_settings)
+        %li.nav-item.mx-lg-2
+          =link_to main_app.edit_backend_setting_path, class: "nav-link" do
+            %i.fa.fa-cog.mr-2.fa-lg
+            =t("admin.side_menu.settings")
+
+      -# logout
+      %li.nav-item.mx-lg-2
+        =link_to main_app.destroy_account_session_path, class: "nav-link", method: :delete do
+          %i.fa.fa-power-off.mr-2.fa-lg
+          =t("admin.top_menu.logout")

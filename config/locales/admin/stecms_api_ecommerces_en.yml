@@ -1,0 +1,11 @@
+en:
+  stecms_api_ecommerce:
+    table:
+      title: title
+      subtitle: Subtitle
+      body: Description
+      ecommerce_permalink: Link e-commerce
+      active: Active
+
+
+

@@ -23,7 +23,7 @@ module StecmsApiEcommerce
           page = {
             page_layout_identifier: "api_page",
             translations_attributes: [],
-            store_products_attribute: nil
+            store_product_attributes: nil
           }
 
           LipsiaWEB["langs"].each do |lang|
