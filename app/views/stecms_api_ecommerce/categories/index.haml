@@ -16,3 +16,5 @@
                 %td= store.category.active
                 %td
 
+
+      = paginate @categories, params: { script_name: "/backend" }

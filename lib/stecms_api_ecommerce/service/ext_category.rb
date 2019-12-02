@@ -8,6 +8,7 @@ module StecmsApiEcommerce
           page = {
             page_layout_identifier: "api_page",
             translations_attributes: [],
+            images_attributes: [],
             store_category_attributes: nil}
 
           LipsiaWEB["langs"].each do |lang|
@@ -24,7 +25,12 @@ module StecmsApiEcommerce
             }
           end
 
+          x[:images].each do |image|
+            page[:images_attributes] << {remote_asset_url: ENV["STORE_URL"] + image}
+          end
+
           page[:store_category_attributes] = {original_id: x["id"]}
+
           pages << page
         end
         @pages = pages
@@ -45,6 +51,7 @@ module StecmsApiEcommerce
             category = detail.category
             page[:store_category_attributes][:id] = detail.id
             page[:translations_attributes] = category.translations
+            page[:images_attributes] = category.images
             category.update(page)
           else
             Product::Category.create(page)

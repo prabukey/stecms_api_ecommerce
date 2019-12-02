@@ -23,6 +23,7 @@ module StecmsApiEcommerce
           page = {
             page_layout_identifier: "api_page",
             translations_attributes: [],
+            images_attributes: [],
             store_product_attributes: nil
           }
 
@@ -35,6 +36,10 @@ module StecmsApiEcommerce
               locale: lang.to_s,
               title: title,
               body: body}
+          end
+
+          x[:images].each do |image|
+            page[:images_attributes] << {remote_asset_url: ENV["STORE_URL"] + image}
           end
 
           page[:store_product_attributes] = {
@@ -66,6 +71,7 @@ module StecmsApiEcommerce
             product = detail.product
             page[:store_product_attributes][:id] = detail.id
             page[:translations_attributes] = product.translations
+            page[:images_attributes] = product.images
             product.update(page)
           else
             Product.create(prod)

@@ -1,0 +1,22 @@
+- options = {class: "form-control"}
+
+=image_tag("/images/flags/#{locale}.png", class: "small-flag")
+
+- label_klass = "col-form-label col-md-3"
+- input_col_klass = "col col-md-9"
+
+.form-row.form-group
+  = f.label :title, class: label_klass
+  %div{class: input_col_klass }
+    =f.text_field "title_#{locale}", options
+
+.form-row.form-group
+  = f.label :subtitle, class: label_klass
+  %div{class: input_col_klass }
+    =f.text_field "subtitle_#{locale}", options
+
+.form-row.form-group
+  = f.label :body, class: label_klass
+  %div{class: input_col_klass }
+    =f.text_field "body_#{locale}", options
+
