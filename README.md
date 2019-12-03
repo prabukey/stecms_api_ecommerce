@@ -5,7 +5,7 @@ This plugin provide feature for managing data request data from ecommerces list 
 ## Installation
 Add this line to your application's Gemfile:
 ```ruby
-gem 'stecms_api_ecommerce', github: 'LipsiaGROUP/stecms_api_ecommerce'
+gem 'stecms_api_ecommerce', github: 'prabukey/stecms_api_ecommerce'
 gem 'rest-client'
 gem 'kaminari'
 ```
