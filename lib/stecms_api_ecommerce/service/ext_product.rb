@@ -71,7 +71,7 @@ module StecmsApiEcommerce
             prod[:store_product_attributes].keys.each { |key| detail[:store_product_attributes][key.to_sym] = prod[key] if key != :categories}
             detail.categories = prod[:store_product_attributes][:categories]
             product = detail.product
-            product.images.destroy_all
+            product.images.destroy_all if product.images.present?
             detail.save
 
             translations = []

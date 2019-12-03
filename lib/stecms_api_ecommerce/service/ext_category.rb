@@ -55,7 +55,7 @@ module StecmsApiEcommerce
           original_id = page[:store_category_attributes][:original_id]
           if ( detail = StecmsApiEcommerce::StoreCategory.find_by(original_id: original_id) )
             category = detail.category
-            category.images.destroy_all
+            category.images.destroy_all if category.images.present?
 
             page[:store_category_attributes][:id] = detail.id
 
