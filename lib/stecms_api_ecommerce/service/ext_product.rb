@@ -5,20 +5,8 @@ module StecmsApiEcommerce
     class ExtProduct
 
       def initialize(args=nil)
-        # detail_products = args.map do |x|
-        #   {
-        #     original_id:        x["id"],
-        #     permalink:          x["permalink"],
-        #     price_with_vat:     x["price_with_vat"],
-        #     price_without_vat:  x["price_without_vat"],
-        #     categories:         StecmsApiEcommerce::StoreCategory.select(:id).where(original_id: x["category_ids"])
-        #   }
-        # end
-        # @detail_products = detail_products
-
 
         pages = []
-
         args.each do |x|
           page = {
             page_layout_identifier: "api_page",
@@ -44,12 +32,13 @@ module StecmsApiEcommerce
             page[:images_attributes] << {remote_asset_url: ENV["STORE_URL"] + image, active: true}
           end
 
+
           page[:store_product_attributes] = {
             original_id:        x["id"],
             permalink:          x["permalink"],
             price_with_vat:     x["price_with_vat"],
             price_without_vat:  x["price_without_vat"],
-            categories:         StecmsApiEcommerce::StoreCategory.select(:id).where(original_id: x["category_ids"])
+            categories:  StecmsApiEcommerce::StoreCategory.where(original_id: x["category_ids"])
           }
           pages << page
         end

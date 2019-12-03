@@ -8,7 +8,9 @@ module StecmsApiEcommerce
 
   module Service
     def self.load
+      puts "start load categories"
       categories
+      puts "start load products"
       products
     end
 
