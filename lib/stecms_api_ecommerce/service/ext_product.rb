@@ -69,7 +69,7 @@ module StecmsApiEcommerce
           original_id = prod[:store_product_attributes][:original_id]
           if ( detail = StecmsApiEcommerce::StoreProduct.find_by(original_id: original_id) )
             prod[:store_product_attributes].keys.each { |key| detail[:store_product_attributes][key.to_sym] = prod[key] if key != :categories}
-            detail.product = prod[:store_product_attributes][:categories]
+            detail.categories = prod[:store_product_attributes][:categories]
             product = detail.product
             product.images.destroy_all
             detail.save
