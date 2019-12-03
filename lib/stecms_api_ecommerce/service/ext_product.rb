@@ -16,8 +16,10 @@ module StecmsApiEcommerce
           }
 
           LipsiaWEB["langs"].each do |lang|
+            title = x["name"]
+            body  = x["description"]
             if x["translations"].present? && x["translations"][lang.to_s].present?
-              title = x["translations"][lang.to_s]["text"]
+              title = x["translations"][lang.to_s]["name"]
               body  = x["translations"][lang.to_s]["description"]
             end
             page[:translations_attributes] << {
