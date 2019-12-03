@@ -1,4 +1,5 @@
-  class StoreCategoryPolicy < AdminPolicy
+ module StecmsApiEcommerce
+  class StoreProductPolicy < AdminPolicy
 
     def index?
       category_enabled
@@ -12,8 +13,15 @@
       category_enabled
     end
 
+    def new?
+      category_enabled
+    end
 
-    def update_password?
+    def create?
+      category_enabled
+    end
+
+    def destroy?
       category_enabled
     end
 
@@ -27,3 +35,4 @@
 
   end
 
+end

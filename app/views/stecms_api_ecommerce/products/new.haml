@@ -2,12 +2,8 @@
   .row
     .col-12
       .content-box{:"data-id" => @category.id}
-        =form_for @category, url: main_app.stecms_api_ecommerce_category_path(@category.store_category.id), html: {class: "form", method: :put } do |f|
+        =form_for @category, url: main_app.stecms_api_ecommerce_categories_path, html: {class: "form"} do |f|
           =render partial: "stecms_api_ecommerce/shared/form", locals: {f: f, content: @category }
           .fixed-buttons
             =f.submit t("admin.words.save"), class: "btn btn-primary"
-
-
-
-
 

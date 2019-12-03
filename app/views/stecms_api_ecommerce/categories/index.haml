@@ -7,14 +7,21 @@
             %tr
               - t("stecms_api_ecommerce.table").each do |_, val|
                 %th=  val
+              %th
           %tbody
-            - @categories.each do |store|
+            - @categories.each do |category|
               %tr
-                %td= store.category.title
-                %td= store.category.subtitle
-                %td= truncate store.category.body, limit: 50
-                %td= store.category.active
+                %td= category.title
+                %td= category.subtitle
+                %td= truncate category.body, limit: 50
+                %td= category.store_category.permalink
+                %td= category.active
                 %td
+                  = link_to main_app.edit_stecms_api_ecommerce_category_path(category.id), class: "btn btn-primary" do
+                    =t("admin.words.edit")
+                  = link_to main_app.stecms_api_ecommerce_category_path(category.id), class: "btn btn-danger", :"data-method" => "DELETE" do
+                    =t("admin.words.delete")
+
 
 
       = paginate @categories, params: { script_name: "/backend" }

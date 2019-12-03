@@ -1,0 +1,27 @@
+.container-fluid.mt-5
+  .row
+    .col-12
+      .table-responsive
+        %table.table.table-sm#user-roles-table
+          %thead
+            %tr
+              - t("stecms_api_ecommerce.table").each do |_, val|
+                %th=  val
+              %th
+          %tbody
+            - @products.each do |product|
+              %tr
+                %td= product.title
+                %td= product.subtitle
+                %td= truncate product.body, limit: 50
+                %td= product.store_product.permalink
+                %td= product.active
+                %td
+                  = link_to main_app.edit_stecms_api_ecommerce_product_path(product.id), class: "btn btn-primary" do
+                    =t("admin.words.edit")
+                  = link_to main_app.stecms_api_ecommerce_product_path(product.id), class: "btn btn-danger", :"data-method" => "DELETE" do
+                    =t("admin.words.delete")
+
+
+
+      = paginate @products, params: { script_name: "/backend" }

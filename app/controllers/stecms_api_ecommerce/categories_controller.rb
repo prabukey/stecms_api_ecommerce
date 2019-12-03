@@ -1,27 +1,45 @@
-# require_dependency "stecms_api_ecommerce/application_controller"
-
 module StecmsApiEcommerce
   class CategoriesController < BackendController
 
     def index
-      @categories = StecmsApiEcommerce::StoreCategory.page(params[:page]).per(5)
-      authorize(@categories)
+      authorize(StecmsApiEcommerce::StoreCategory)
+      @categories = Product::Category.page(params[:page]).per(20)
     end
 
     def new
+      authorize(StecmsApiEcommerce::StoreCategory)
+
+      @category = Product::Category.new
+      @category.images.build
+      @category.translations.build
+      @category.build_store_category
+    end
+
+    def create
+      authorize StecmsApiEcommerce::StoreCategory
+      @category = Product::Category.new(params[:product_category].permit!)
+      @category.save
+      redirect_to main_app.edit_stecms_api_ecommerce_category_path(@category.id)
     end
 
     def edit
+      authorize(StecmsApiEcommerce::StoreCategory)
       @category = Product::Category.find(params[:id])
-      authorize(@category.store_category)
     end
 
     def update
-      @category = StecmsApiEcommerce::StoreCategory.find(params[:id])
-      authorize(@category)
+      authorize(StecmsApiEcommerce::StoreCategory)
+      @category = Product::Category.find(params[:id])
 
-      @category.category.update(params[:product_category].permit!)
-      redirect_to main_app.edit_stecms_api_ecommerce_category_path(@category.category.id)
+      @category.update(params[:product_category].permit!)
+      redirect_to main_app.edit_stecms_api_ecommerce_category_path(@category.id)
+    end
+
+    def destroy
+      authorize(StecmsApiEcommerce::StoreCategory)
+      Product::Category.find(params[:id]).destroy
+
+      redirect_to :back
     end
   end
 end

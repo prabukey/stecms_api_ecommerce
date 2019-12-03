@@ -1,0 +1,67 @@
+- card_title = "<small class='text-muted'>" + t("admin.page.edit_content") + "</small>" + " <span class='page-title'>#{content.title}</span>"
+
+=render_card_box title: card_title, collapse: true do
+  -# LAYOUTS and active
+  .form-row
+    .form-group.col-md-12
+      .form-row.align-items-center
+        %label.col-form-label.col-md-4.text-left=t("admin.content.edit_box.active")
+        .col-md-8.text-right
+          - LipsiaWEB[:langs].each do |lang|
+            .form-check.backend-checkbox.check-right.inline-check
+              = f.check_box "active_#{lang}", class: "form-check-input"
+              = f.label "active_#{lang}", lang.upcase, class: "form-check-label"
+    .form-group.col-md-12
+      %ul.nav.nav-tabs.mt-3
+        %li.nav-item
+          =link_to "#tab-contents-#{content.id}", class: "nav-link active", :"data-toggle" => "tab" do
+            =t("admin.content.edit_box.contents")
+
+        -[:structure, :style].each do |key|
+          -# Properties and advanced options
+          - has_page_layout_properties = (f.object&.page_layout.present? && f.object.page_layout.send("#{key}_properties").present?)
+          - has_layout_properties = (f.object&.layout.present? && f.object.layout.send("#{key}_properties").present?)
+          -if has_layout_properties || has_page_layout_properties
+            %li.nav-item
+              =link_to "#tab-#{key}-#{content.id}", class: "nav-link", :"data-toggle" => "tab" do
+                =t("admin.content.edit_box.#{key}")
+        %li.nav-item
+          =link_to "#tab-metas-#{content.id}", class: "nav-link", :"data-toggle" => "tab" do
+            =t("admin.content.edit_box.meta_tags")
+      .tab-content
+        .tab-pane.my-4.show.active{id: "tab-contents-#{content.id}"}
+
+          .form-row.mt-4.row-divided
+            - LipsiaWEB[:langs].each do |lang|
+              .col-6
+                =render partial: "stecms_api_ecommerce/shared/localized_values", locals: {f: f, locale: lang }
+          .row.mt-5
+            .col-12
+              =render_card_part title: t("admin.images.uploader_title"), collapse: false do
+                =render partial: "backend/images/uploader", locals: { parent: f.object }
+          .row.mt-5
+            .col-12
+              =render_card_part title: "Ecommerce Info", collapse: false do
+                .row.align-items-start
+                  .col
+                    = f.fields_for :store_category do |s|
+                      = s.hidden_field :id
+                      .form-row.form-group
+                        .col-form-label.col-md-3
+                          = s.label :original_id, class: "col-form-label col-md-3"
+                          = s.text_field :original_id
+                      .form-row.form-group
+                        .col-form-label.col-md-3
+                          = s.label :permalink, class: "col-form-label col-md-3"
+                          = s.text_field :permalink
+
+        .tab-pane.my-4{id: "tab-metas-#{content.id}" }
+          -# Meta tags
+          .row
+            .col-12
+              -# =render_card_part title: t("admin.content.edit_box.meta_tags"), collapse: true, collapsed: true do
+              .form-row.row-divided
+                .col
+                  =render partial: "backend/contents/meta_tags", locals: {f: f, locale: @first_lang}
+
+
