@@ -16,13 +16,18 @@ And then execute:
 
 ## Usage
 
-
 Run this command to generate required migration:
 ```ruby
  rake stecms_api_ecommerce:install:migrations
 ```
 
 and then `rake db:migrate`
+
+## Routes
+Add this line to your application's routes.rb:
+```ruby
+  stecme_api_ecommerce
+```
 
 ##  Menu View
 
