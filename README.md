@@ -1,4 +1,4 @@
-## Stecms Appointment Plugin
+## Stecms Api Ecommerces
 
 This plugin provide feature for managing data request data from ecommerces list for STECMS.
 
