@@ -1,9 +1,9 @@
 .container-fluid.mt-5
   .row
     .col-12
-      .content-box{:"data-id" => @category.id}
-        =form_for @category, url: main_app.stecms_api_ecommerce_categories_path, html: {class: "form"} do |f|
-          =render partial: "stecms_api_ecommerce/shared/form", locals: {f: f, content: @category }
+      .content-box{:"data-id" => @product.id}
+        =form_for @product, url: main_app.stecms_api_ecommerce_products_path, html: {class: "form"} do |f|
+          =render partial: "stecms_api_ecommerce/shared/form", locals: {f: f, content: @product }
           .fixed-buttons
             =f.submit t("admin.words.save"), class: "btn btn-primary"
 
