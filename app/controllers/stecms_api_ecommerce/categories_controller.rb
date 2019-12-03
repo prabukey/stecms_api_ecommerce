@@ -41,5 +41,10 @@ module StecmsApiEcommerce
 
       redirect_to :back
     end
+
+    def sync
+      StecmsApiEcommerce::Service.load
+      redirect_to :back
+    end
   end
 end

@@ -55,11 +55,10 @@ module StecmsApiEcommerce
         end
       end
 
-      def create_or_update(pages)
-        pages.each do |prod|
+      def create_or_update
+        @pages.each do |prod|
           original_id = prod[:store_product_attributes][:original_id]
           if ( detail = StecmsApiEcommerce::StoreProduct.find_by(original_id: original_id) )
-            prod[:store_product_attributes].keys.each { |key| detail[:store_product_attributes][key.to_sym] = prod[key] if key != :categories}
             detail.categories = prod[:store_product_attributes][:categories]
             product = detail.product
             product.images.destroy_all if product.images.present?
@@ -67,14 +66,14 @@ module StecmsApiEcommerce
 
             translations = []
             product.translations.each do  |tran|
-              tmp = page[:translations_attributes].select{|x| x[:locale] == tran.locale}.first
+              tmp = prod[:translations_attributes].select{|x| x[:locale] == tran.locale.to_s}.first
               tmp[:id] = tran.id
               translations << tmp
             end
 
-            page[:store_product_attributes][:id] = detail.id
-            page[:translations_attributes] = translations
-            product.update(page)
+            prod[:store_product_attributes][:id] = detail.id
+            prod[:translations_attributes] = translations
+            product.update(prod)
           else
             Product.create(prod)
           end
