@@ -4,6 +4,7 @@ module StecmsApiEcommerce
 
       def initialize(args=nil)
         pages = []
+        puts "load categories #{args.present?}"
         args.each do |x|
           page = {
             page_layout_identifier: "api_page",
@@ -18,18 +19,23 @@ module StecmsApiEcommerce
               title = x["translations"][lang.to_s]["text"]
               body  = x["translations"][lang.to_s]["description"]
             end
+
             page[:translations_attributes] << {
               locale: lang.to_s,
               title: title,
-              body: body
+              body: body,
+              active: true
             }
           end
 
-          x[:images].each do |image|
-            page[:images_attributes] << {remote_asset_url: ENV["STORE_URL"] + image}
+          x["images"]&.each do |image|
+            page[:images_attributes] << {remote_asset_url: ENV["STORE_URL"] + image, active: true}
           end
 
-          page[:store_category_attributes] = {original_id: x["id"]}
+          page[:store_category_attributes] = {
+            original_id: x["id"],
+            permalink: x["permalink"]
+          }
 
           pages << page
         end
@@ -46,12 +52,21 @@ module StecmsApiEcommerce
 
       def create_or_update
         @pages.each do |page|
-          original_id = page[:store_category][:original_id]
+          original_id = page[:store_category_attributes][:original_id]
           if ( detail = StecmsApiEcommerce::StoreCategory.find_by(original_id: original_id) )
             category = detail.category
+            category.images.destroy_all
+
             page[:store_category_attributes][:id] = detail.id
-            page[:translations_attributes] = category.translations
-            page[:images_attributes] = category.images
+
+            translations = []
+            category.translations.each do  |tran|
+              tmp = page[:translations_attributes].select{|x| x[:locale] == tran.locale.to_s}.first
+              tmp[:id] = tran.id
+              translations << tmp
+            end
+            page[:translations_attributes] = translations
+
             category.update(page)
           else
             Product::Category.create(page)

@@ -4,6 +4,7 @@ class CreateStecmsApiEcommerceStoreCategories < ActiveRecord::Migration
 
       t.integer :original_id
       t.integer :content_id
+      t.string  :permalink
 
       t.timestamps null: false
     end
