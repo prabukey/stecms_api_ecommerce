@@ -44,16 +44,16 @@
               =render_card_part title: "Ecommerce Info", collapse: false do
                 .row.align-items-start
                   .col
-                    = f.fields_for :store_category do |s|
+                    - store = @category.present? ? :store_category : :store_product
+                    = f.fields_for store do |s|
                       = s.hidden_field :id
-                      .form-row.form-group
-                        .col-form-label.col-md-3
-                          = s.label :original_id, class: "col-form-label col-md-3"
-                          = s.text_field :original_id
-                      .form-row.form-group
-                        .col-form-label.col-md-3
-                          = s.label :permalink, class: "col-form-label col-md-3"
-                          = s.text_field :permalink
+                      - s.object.attributes.keys.reject{ |x| ["id",  "content_id", "created_at", "updated_at"].include?(x) }.each do |key|
+                        .form-row.form-group
+                          = s.label key.to_sym, class: "col-form-label col-md-3"
+                          .col.col-md-9
+                            = s.text_field key.to_sym, class: "form-control"
+
+
 
         .tab-pane.my-4{id: "tab-metas-#{content.id}" }
           -# Meta tags
@@ -63,5 +63,7 @@
               .form-row.row-divided
                 .col
                   =render partial: "backend/contents/meta_tags", locals: {f: f, locale: @first_lang}
+      .form-group.col-md-12.text-right
+        =f.submit t("admin.words.save"), class: "btn btn-primary"
 
 
