@@ -1,6 +1,7 @@
 .container-fluid.mt-5
   .row
     .col-12
+      %h1=t("admin.products.edit.title")
       .content-box{:"data-id" => @product.id}
         =form_for @product, url: main_app.stecms_api_ecommerce_category_path(@product.id), html: {class: "form", method: :put } do |f|
           =render partial: "stecms_api_ecommerce/shared/form", locals: {f: f, content: @product }

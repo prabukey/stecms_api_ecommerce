@@ -20,8 +20,9 @@
           %i.fa.fa-plug.mr-2.fa-lg
           = "Master"
         %div.dropdown-menu{"aria-labelledby"=>"navbarDropdown"}
+          = link_to 'Sync Data Ecommerce', main_app.stecms_api_ecommerce_sycn_path, class: 'dropdown-item'
           = link_to 'Products', main_app.stecms_api_ecommerce_products_path, class: 'dropdown-item'
-          =link_to 'Catgories', main_app.stecms_api_ecommerce_categories_path, class: "dropdown-item"
+          = link_to 'Catgories', main_app.stecms_api_ecommerce_categories_path, class: "dropdown-item"
 
       -if policy(Contact).index? || policy(Contact::Typology).index?
         %li.nav-item.mx-lg-2

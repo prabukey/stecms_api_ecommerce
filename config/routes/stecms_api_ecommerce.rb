@@ -1,6 +1,7 @@
 namespace :stecms_api_ecommerce, path: "backend" do
   resources :categories
   resources :products
+  get :sync, controller: "stecms_api_ecommerce/categories", action: :sync
 end
 
 namespace :backend do
