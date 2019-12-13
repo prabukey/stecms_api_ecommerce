@@ -43,6 +43,7 @@ module StecmsApiEcommerce
     end
 
     def sync
+      authorize(StecmsApiEcommerce::StoreCategory)
       StecmsApiEcommerce::Service.load
       redirect_to :back
     end

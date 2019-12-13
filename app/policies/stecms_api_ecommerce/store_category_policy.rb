@@ -26,6 +26,11 @@
     end
 
 
+    def sync?
+      category_enabled
+    end
+
+
     private
 
     def category_enabled
