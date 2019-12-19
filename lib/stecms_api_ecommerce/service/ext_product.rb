@@ -7,6 +7,7 @@ module StecmsApiEcommerce
       def initialize(args=nil)
 
         pages = []
+        # pages_images = {}
         args.each do |x|
           page = {
             page_layout_identifier: "api_page",
@@ -30,7 +31,9 @@ module StecmsApiEcommerce
             }
           end
 
+          # pages_images[x["id"]] = []
           x["images"]&.each do |image|
+             # pages_images[x["id"]] << {remote_asset_url: ENV["STORE_URL"] + image, active: true}
             page[:images_attributes] << {remote_asset_url: ENV["STORE_URL"] + image, active: true}
           end
 
@@ -40,11 +43,14 @@ module StecmsApiEcommerce
             permalink:          x["permalink"],
             price_with_vat:     x["price_with_vat"],
             price_without_vat:  x["price_without_vat"],
-            categories:  StecmsApiEcommerce::StoreCategory.where(original_id: x["category_ids"])
+            attrs:              x["attributes"],
+            categories:         StecmsApiEcommerce::StoreCategory.where(original_id: x["category_ids"])
           }
           pages << page
         end
         @pages = pages
+        # @pages_images = pages_images
+        @data = args
       end
 
       def save
@@ -52,6 +58,26 @@ module StecmsApiEcommerce
           create_or_update
         else
           Product.create(@pages)
+        end
+        # save_images
+      end
+
+      def save_images
+        @data.each do |p|
+          next unless ( images = @pages_images[p["id"]]).present?
+          if ( detail = StecmsApiEcommerce::StoreProduct.find_by(original_id: p["id"]) )
+            product = detail.product
+            product.images.destroy_all if product.images.present?
+            images.each do |image|
+              begin
+                product.images.build(image)
+                product.save
+              rescue RuntimeError => e
+                puts "image not exist"
+              end
+            end
+
+          end
         end
       end
 

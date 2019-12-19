@@ -49,9 +49,27 @@
                       = s.hidden_field :id
                       - s.object.attributes.keys.reject{ |x| ["id",  "content_id", "created_at", "updated_at"].include?(x) }.each do |key|
                         .form-row.form-group
-                          = s.label key.to_sym, class: "col-form-label col-md-3"
-                          .col.col-md-9
-                            = s.text_field key.to_sym, class: "form-control"
+                          -if !s.object[key].is_a?(Hash)
+                            = s.label key.to_sym, class: "col-form-label col-md-3"
+                            .col.col-md-9
+                              = s.text_field key.to_sym, class: "form-control"
+                          -else
+                            = s.label key.to_sym, class: "col-form-label col-md-3"
+                            .col.col-md-9
+                              .form-row.form-group
+                                - s.object[key].keys.each do |obj|
+                                  .col-6
+                                    = image_tag "/images/flags/#{obj}.png", class: "small-flag"
+                                    .form-row.form-group
+                                      - s.object[key][obj].each do |attrs|
+                                        = s.label attrs["name"], class: "col-form-label col-md-3"
+                                        = text_field_tag "product[store_product_attributes][#{key}][#{obj}][][value]", attrs["value"], class: "form-control col-md-9"
+                                        = hidden_field_tag "product[store_product_attributes][#{key}][#{obj}][][name]", attrs["name"], class: "form-control"
+                                        = hidden_field_tag "product[store_product_attributes][#{key}][#{obj}][][locale]", attrs["locale"], class: "form-control"
+
+
+
+
 
 
 

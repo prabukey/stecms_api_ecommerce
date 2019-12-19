@@ -30,9 +30,9 @@ module StecmsApiEcommerce
 
     def update
       authorize(StecmsApiEcommerce::StoreProduct)
-      @product = StecmsApiEcommerce::StoreProduct.find(params[:id])
+      @product = Product.find(params[:id])
 
-      @product.product.update(params[:product].permit!)
+      @product.update(params[:product].permit!)
       redirect_to main_app.edit_stecms_api_ecommerce_product_path(@product.id)
     end
 
